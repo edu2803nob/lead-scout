@@ -47,12 +47,7 @@ export interface LeadEnrichmentPanelProps {
   onEnrich: () => void;
 }
 
-export function LeadEnrichmentPanel({
-  lead,
-  result,
-  pending,
-  onEnrich,
-}: LeadEnrichmentPanelProps) {
+export function LeadEnrichmentPanel({ lead, result, pending, onEnrich }: LeadEnrichmentPanelProps) {
   const websiteQuality = result?.website.quality ?? lead.websiteQuality;
   const rating = result?.google.rating ?? lead.googleRating;
   const reviews = result?.google.reviewCount ?? lead.googleReviewCount;
@@ -138,7 +133,9 @@ export function LeadEnrichmentPanel({
           <div className="flex items-start gap-2 rounded-lg border border-border bg-surface p-3">
             <Globe className="mt-0.5 size-4 text-muted-foreground" aria-hidden />
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{result.website.title ?? result.website.url}</p>
+              <p className="truncate text-sm font-medium">
+                {result.website.title ?? result.website.url}
+              </p>
               <p className="line-clamp-2 text-xs text-muted-foreground">
                 {result.website.description ?? "Sem meta descrição publicada."}
               </p>

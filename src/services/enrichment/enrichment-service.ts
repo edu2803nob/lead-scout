@@ -29,7 +29,12 @@ type Db = SupabaseClient<Database>;
  * Register new sources here — nothing else changes.
  */
 export function defaultProviders(): EnrichmentProvider[] {
-  return [new WebsiteProvider(), new GoogleProvider(), new SocialProvider(), new WhatsappProvider()];
+  return [
+    new WebsiteProvider(),
+    new GoogleProvider(),
+    new SocialProvider(),
+    new WhatsappProvider(),
+  ];
 }
 
 export interface EnrichmentRunner {

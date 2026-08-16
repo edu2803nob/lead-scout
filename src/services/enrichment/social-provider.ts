@@ -46,8 +46,8 @@ export class SocialProvider implements EnrichmentProvider {
   supports(context: EnrichmentContext): boolean {
     return Boolean(
       context.snapshot?.socialLinks.length ||
-        context.lead.instagramUrl ||
-        context.lead.instagramUsername,
+      context.lead.instagramUrl ||
+      context.lead.instagramUsername,
     );
   }
 

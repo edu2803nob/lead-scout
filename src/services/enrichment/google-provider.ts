@@ -22,7 +22,10 @@ export function toGoogleCategories(details: GooglePlaceDetails | null): string[]
 }
 
 /** Maps place details into Google indicators, keeping nulls when absent. */
-export function toGoogleSignals(placeId: string, details: GooglePlaceDetails | null): GoogleSignals {
+export function toGoogleSignals(
+  placeId: string,
+  details: GooglePlaceDetails | null,
+): GoogleSignals {
   return {
     placeId,
     rating: typeof details?.rating === "number" ? details.rating : null,

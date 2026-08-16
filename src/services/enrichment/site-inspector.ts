@@ -130,7 +130,11 @@ export function detectSocialProfile(
     username = segments[1]?.slice(0, 60) ?? null;
   }
 
-  return { network: match.network, url: `${url.origin}${url.pathname}`.replace(/\/$/, ""), username };
+  return {
+    network: match.network,
+    url: `${url.origin}${url.pathname}`.replace(/\/$/, ""),
+    username,
+  };
 }
 
 const WHATSAPP_HOSTS = /(^|\.)(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com|whatsapp\.com)$/i;

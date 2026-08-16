@@ -19,14 +19,8 @@ import {
   parseSiteHtml,
 } from "@/services/enrichment/site-inspector";
 import { classifyActivity, SocialProvider } from "@/services/enrichment/social-provider";
-import {
-  classifyWebsiteQuality,
-  WebsiteProvider,
-} from "@/services/enrichment/website-provider";
-import {
-  WhatsappProvider,
-  whatsappPhoneFromLink,
-} from "@/services/enrichment/whatsapp-provider";
+import { classifyWebsiteQuality, WebsiteProvider } from "@/services/enrichment/website-provider";
+import { WhatsappProvider, whatsappPhoneFromLink } from "@/services/enrichment/whatsapp-provider";
 import type { EnrichmentPatch } from "@/types/enrichment";
 
 const lead: EnrichmentLead = {
@@ -107,9 +101,9 @@ describe("html parsing", () => {
   });
 
   it("extracts only published whatsapp links", () => {
-    expect(extractWhatsappLinks(["https://wa.me/5585999990000", "tel:+5585999990000"])).toHaveLength(
-      1,
-    );
+    expect(
+      extractWhatsappLinks(["https://wa.me/5585999990000", "tel:+5585999990000"]),
+    ).toHaveLength(1);
   });
 });
 

@@ -2,7 +2,12 @@ import type { WebsiteQuality, WebsiteSignals } from "@/types/enrichment";
 import { EMPTY_WEBSITE_SIGNALS } from "@/types/enrichment";
 
 import type { EnrichmentContext, EnrichmentProvider, ProviderOutput } from "./provider";
-import { inspectWebsite, normalizeWebsiteUrl, SiteBlockedError, type FetchLike } from "./site-inspector";
+import {
+  inspectWebsite,
+  normalizeWebsiteUrl,
+  SiteBlockedError,
+  type FetchLike,
+} from "./site-inspector";
 
 export interface WebsiteQualityInput {
   hasWebsite: boolean;
