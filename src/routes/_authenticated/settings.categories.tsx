@@ -122,9 +122,12 @@ function CategoriesSettingsPage() {
       {tree.isPending ? (
         <LoadingState label="Carregando catálogo..." />
       ) : tree.isError ? (
-        <ErrorState description={toUserMessage(tree.error)} onRetry={() => void tree.refetch()} />
+        <ErrorState message={toUserMessage(tree.error)} onRetry={() => void tree.refetch()} />
       ) : (tree.data ?? []).length === 0 ? (
-        <EmptyState title="Nenhuma categoria cadastrada" />
+        <EmptyState
+          title="Nenhuma categoria cadastrada"
+          description="Crie a primeira categoria para começar a organizar a prospecção."
+        />
       ) : (
         <div className="flex flex-col gap-3">
           {!isAdmin ? (
