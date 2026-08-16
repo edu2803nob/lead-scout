@@ -155,10 +155,14 @@ export class CategoryRepository {
   }
 }
 
-function toColumns(patch: UpdateCategoryInput["data"]) {
-  const columns: Record<string, unknown> = {};
-  if (patch.name !== undefined) columns.name = patch.name;
-  if (patch.sortOrder !== undefined) columns.sort_order = patch.sortOrder;
-  if (patch.isActive !== undefined) columns.is_active = patch.isActive;
-  return columns;
+function toColumns(patch: UpdateCategoryInput["data"]): {
+  name?: string;
+  sort_order?: number;
+  is_active?: boolean;
+} {
+  return {
+    ...(patch.name !== undefined ? { name: patch.name } : {}),
+    ...(patch.sortOrder !== undefined ? { sort_order: patch.sortOrder } : {}),
+    ...(patch.isActive !== undefined ? { is_active: patch.isActive } : {}),
+  };
 }
