@@ -1,3 +1,5 @@
+import type { WebsiteQuality } from "@/types/enrichment";
+
 /**
  * Domain types for the Lead entity.
  * Keep this file free of infrastructure concerns (no Supabase / HTTP imports).
@@ -66,6 +68,17 @@ export interface Lead {
   hasWebsite: boolean;
   status: LeadStatus;
   source: string;
+  // Enrichment indicators (nullable: never guessed)
+  googlePlaceId: string | null;
+  googleRating: number | null;
+  googleReviewCount: number | null;
+  websiteQuality: WebsiteQuality;
+  instagramUrl: string | null;
+  instagramUsername: string | null;
+  instagramFollowers: number | null;
+  instagramPostCount: number | null;
+  instagramLastPostAt: string | null;
+  hasWhatsapp: boolean;
   createdAt: string;
   updatedAt: string;
 }
