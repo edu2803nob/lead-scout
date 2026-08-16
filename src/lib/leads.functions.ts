@@ -13,9 +13,7 @@ import { LeadRepository } from "@/services/leads/lead-repository";
 export const listLeads = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => parseOrThrow(listLeadsSchema, data ?? {}))
-  .handler(({ data, context }) =>
-    new LeadRepository(context.supabase, context.userId).list(data),
-  );
+  .handler(({ data, context }) => new LeadRepository(context.supabase, context.userId).list(data));
 
 export const getLead = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

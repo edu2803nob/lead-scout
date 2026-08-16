@@ -155,9 +155,7 @@ function LeadsPage() {
 
           <Select
             value={search.website}
-            onValueChange={(value) =>
-              updateSearch({ website: value as "all" | "yes" | "no" })
-            }
+            onValueChange={(value) => updateSearch({ website: value as "all" | "yes" | "no" })}
           >
             <SelectTrigger className="md:w-44">
               <SelectValue placeholder="Site" />
