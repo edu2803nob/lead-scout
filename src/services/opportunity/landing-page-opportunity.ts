@@ -99,7 +99,7 @@ export function calculateLandingPageOpportunity(
 
   // ---------------------------------------------------------------- GAP
   const quality = lead.hasWebsite ? lead.websiteQuality : "NO_WEBSITE";
-  let gap = OPPORTUNITY_GAP_POINTS.websiteQuality[quality];
+  let gap: number = OPPORTUNITY_GAP_POINTS.websiteQuality[quality];
 
   if (quality === "NO_WEBSITE") {
     push({
