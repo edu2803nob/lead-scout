@@ -6,13 +6,16 @@ import { toast } from "sonner";
 import { ErrorState, LoadingState } from "@/components/common/StateViews";
 import { AppShell } from "@/components/layout/AppShell";
 import { LeadForm } from "@/components/leads/LeadForm";
+import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
 import { updateLead } from "@/lib/leads.functions";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
+import type { EnrichmentResult } from "@/types/enrichment";
 import type { Lead } from "@/types/lead";
 
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
@@ -59,6 +62,7 @@ function LeadDetailPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
+  const [enrichment, setEnrichment] = useState<EnrichmentResult | undefined>(undefined);
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
 
@@ -67,6 +71,16 @@ function LeadDetailPage() {
     onSuccess: async () => {
       toast.success("Lead atualizado.");
       setEditing(false);
+      await queryClient.invalidateQueries({ queryKey: leadQueryKeys.all });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
+  const enrichMutation = useMutation({
+    mutationFn: () => enrichLead({ data: { leadId } }),
+    onSuccess: async (result) => {
+      setEnrichment(result);
+      toast.success("Perfil comercial atualizado.");
       await queryClient.invalidateQueries({ queryKey: leadQueryKeys.all });
     },
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
@@ -153,6 +167,13 @@ function LeadDetailPage() {
               <Field label="País" value={data.country} />
             </CardContent>
           </Card>
+
+          <LeadEnrichmentPanel
+            lead={data}
+            result={enrichment}
+            pending={enrichMutation.isPending}
+            onEnrich={() => enrichMutation.mutate()}
+          />
 
           <Card className="shadow-soft">
             <CardHeader>
