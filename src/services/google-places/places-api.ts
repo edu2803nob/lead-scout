@@ -2,7 +2,7 @@ import { AppError } from "@/lib/errors";
 import { redactSecrets } from "@/lib/security/redact";
 import { PROSPECTION_LIMITS } from "@/types/prospecting";
 
-import type { GoogleSearchTextResponse, SearchPageParams } from "./types";
+import type { GooglePlaceDetails, GoogleSearchTextResponse, SearchPageParams } from "./types";
 
 /**
  * Isolated Google Places access layer.
@@ -156,4 +156,27 @@ export async function geocodeArea(query: string): Promise<{
     return null;
   }
   return { latitude: location.lat, longitude: location.lng };
+}
+
+const DETAILS_FIELD_MASK = [
+  "id",
+  "displayName",
+  "websiteUri",
+  "nationalPhoneNumber",
+  "rating",
+  "userRatingCount",
+  "types",
+  "primaryTypeDisplayName",
+].join(",");
+
+/** Place details for a known place id (used by the enrichment module). */
+export async function fetchPlaceDetails(placeId: string): Promise<GooglePlaceDetails | null> {
+  const id = placeId.trim();
+  if (id.length === 0) return null;
+  const json = (await gatewayFetch(
+    `/places/v1/places/${encodeURIComponent(id)}?languageCode=pt-BR`,
+    { method: "GET", headers: { "X-Goog-FieldMask": DETAILS_FIELD_MASK } },
+    "placeDetails",
+  )) as GooglePlaceDetails | null;
+  return json ?? null;
 }

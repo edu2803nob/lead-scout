@@ -32,3 +32,8 @@ export interface SearchPageParams {
   /** Optional bias circle (radius in metres). */
   bias?: { latitude: number; longitude: number; radiusMeters: number } | null;
 }
+
+/** Place details payload (enrichment module). */
+export interface GooglePlaceDetails extends GooglePlace {
+  types?: string[] | null;
+}
