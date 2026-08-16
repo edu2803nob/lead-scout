@@ -2,16 +2,10 @@ import { z } from "zod";
 
 import { LEAD_STATUSES } from "@/types/lead";
 
-/** Turns "" into null so optional text fields stay clean in the database. */
-const optionalText = (max = 255) =>
-  z
-    .string()
-    .trim()
-    .max(max, `Máximo de ${max} caracteres`)
-    .transform((value) => (value.length === 0 ? null : value))
-    .nullable()
-    .optional()
-    .transform((value) => value ?? null);
+import { safeOptionalText, safeSearch, uuidSchema } from "./common";
+
+/** Optional text: sanitized (control chars/HTML stripped), "" becomes null. */
+const optionalText = (max = 255) => safeOptionalText(max);
 
 const optionalEmail = z
   .string()
@@ -76,21 +70,21 @@ export const leadInputSchema = z.object({
 export const createLeadSchema = leadInputSchema;
 
 export const updateLeadSchema = z.object({
-  id: z.string().uuid("Identificador inválido"),
+  id: uuidSchema,
   data: leadInputSchema,
 });
 
 export const leadIdSchema = z.object({
-  id: z.string().uuid("Identificador inválido"),
+  id: uuidSchema,
 });
 
 export const listLeadsSchema = z.object({
   page: z.number().int().min(1).optional().default(1),
   pageSize: z.number().int().min(1).max(100).optional().default(10),
-  search: z.string().trim().max(160).optional().default(""),
+  search: safeSearch(160),
   status: leadStatusSchema.nullable().optional().default(null),
   hasWebsite: z.boolean().nullable().optional().default(null),
-  city: z.string().trim().max(120).optional().default(""),
+  city: safeSearch(120),
 });
 
 export type LeadInput = z.output<typeof leadInputSchema>;
