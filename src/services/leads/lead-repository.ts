@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
 import { AppError, NotFoundError } from "@/lib/errors";
+import { sanitizeSearchTerm } from "@/lib/security/sanitize";
 import type { LeadInput, ListLeadsParams } from "@/lib/validation/lead";
 import type { Lead, LeadListResult, LeadStats, LeadStatus } from "@/types/lead";
 import { LEAD_STATUSES, OPEN_LEAD_STATUSES } from "@/types/lead";
@@ -12,8 +13,9 @@ export type LeadDb = SupabaseClient<Database>;
 
 const TABLE = "leads";
 
+/** Strips wildcard/delimiter characters before building PostgREST filters. */
 function escapeLike(term: string): string {
-  return term.replace(/[%,()]/g, " ").trim();
+  return sanitizeSearchTerm(term);
 }
 
 function fail(message: string, error: { message?: string } | null): never {
