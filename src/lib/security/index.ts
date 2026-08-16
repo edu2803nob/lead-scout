@@ -1,10 +1,5 @@
 export { redactSecrets, redactValue, isSensitiveKey, REDACTED } from "./redact";
-export {
-  sanitizeText,
-  sanitizeSearchTerm,
-  sanitizePhone,
-  sanitizeRedirectPath,
-} from "./sanitize";
+export { sanitizeText, sanitizeSearchTerm, sanitizePhone, sanitizeRedirectPath } from "./sanitize";
 export {
   consumeRateLimit,
   resetRateLimits,

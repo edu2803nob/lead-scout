@@ -21,7 +21,10 @@ export function sanitizeText(value: string): string {
  * wildcard and delimiter characters that could alter the generated filter.
  */
 export function sanitizeSearchTerm(value: string): string {
-  return sanitizeText(value).replace(LIKE_WILDCARDS, " ").replace(/\s{2,}/g, " ").trim();
+  return sanitizeText(value)
+    .replace(LIKE_WILDCARDS, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 /** Removes anything that is not a digit or a leading `+` from a phone number. */

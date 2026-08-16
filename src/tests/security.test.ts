@@ -106,9 +106,9 @@ describe("validação de IDs e inputs", () => {
     expect(
       createLeadSchema.safeParse({ companyName: "Empresa", email: "não-é-email" }).success,
     ).toBe(false);
-    expect(
-      createLeadSchema.safeParse({ companyName: "Empresa", status: "HACKED" }).success,
-    ).toBe(false);
+    expect(createLeadSchema.safeParse({ companyName: "Empresa", status: "HACKED" }).success).toBe(
+      false,
+    );
     expect(updateLeadSchema.safeParse({ id: "abc", data: { companyName: "Ok" } }).success).toBe(
       false,
     );
