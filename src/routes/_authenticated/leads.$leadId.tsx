@@ -7,18 +7,21 @@ import { ErrorState, LoadingState } from "@/components/common/StateViews";
 import { AppShell } from "@/components/layout/AppShell";
 import { LeadForm } from "@/components/leads/LeadForm";
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
+import { LeadOpportunityPanel } from "@/components/leads/LeadOpportunityPanel";
 import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
+import { analyzeLeadOpportunity } from "@/lib/opportunity.functions";
 import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
 import type { EnrichmentResult } from "@/types/enrichment";
 import type { Lead } from "@/types/lead";
+import type { LandingPageOpportunityResult } from "@/types/opportunity";
 import type { LeadScoreResult } from "@/types/scoring";
 
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
@@ -67,6 +70,9 @@ function LeadDetailPage() {
   const [editing, setEditing] = useState(false);
   const [enrichment, setEnrichment] = useState<EnrichmentResult | undefined>(undefined);
   const [score, setScore] = useState<LeadScoreResult | undefined>(undefined);
+  const [opportunity, setOpportunity] = useState<LandingPageOpportunityResult | undefined>(
+    undefined,
+  );
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
 
@@ -95,6 +101,15 @@ function LeadDetailPage() {
     onSuccess: (result) => {
       setScore(result);
       toast.success(`Score calculado: ${result.totalScore}.`);
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
+  const opportunityMutation = useMutation({
+    mutationFn: () => analyzeLeadOpportunity({ data: { leadId } }),
+    onSuccess: (result) => {
+      setOpportunity(result);
+      toast.success(`Oportunidade de landing page: ${result.opportunityScore}.`);
     },
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
   });
