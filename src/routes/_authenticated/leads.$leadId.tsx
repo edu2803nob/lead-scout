@@ -7,16 +7,19 @@ import { ErrorState, LoadingState } from "@/components/common/StateViews";
 import { AppShell } from "@/components/layout/AppShell";
 import { LeadForm } from "@/components/leads/LeadForm";
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
+import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
+import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
 import type { EnrichmentResult } from "@/types/enrichment";
 import type { Lead } from "@/types/lead";
+import type { LeadScoreResult } from "@/types/scoring";
 
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
   head: () => ({
@@ -63,6 +66,7 @@ function LeadDetailPage() {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
   const [enrichment, setEnrichment] = useState<EnrichmentResult | undefined>(undefined);
+  const [score, setScore] = useState<LeadScoreResult | undefined>(undefined);
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
 
@@ -82,6 +86,15 @@ function LeadDetailPage() {
       setEnrichment(result);
       toast.success("Perfil comercial atualizado.");
       await queryClient.invalidateQueries({ queryKey: leadQueryKeys.all });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
+  const scoreMutation = useMutation({
+    mutationFn: () => scoreLead({ data: { leadId } }),
+    onSuccess: (result) => {
+      setScore(result);
+      toast.success(`Score calculado: ${result.totalScore}.`);
     },
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
   });
@@ -173,6 +186,12 @@ function LeadDetailPage() {
             result={enrichment}
             pending={enrichMutation.isPending}
             onEnrich={() => enrichMutation.mutate()}
+          />
+
+          <LeadScorePanel
+            result={score}
+            pending={scoreMutation.isPending}
+            onCalculate={() => scoreMutation.mutate()}
           />
 
           <Card className="shadow-soft">
