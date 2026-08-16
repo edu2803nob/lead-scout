@@ -53,9 +53,7 @@ export const updateCategory = createServerFn({ method: "POST" })
 export const deleteCategory = createServerFn({ method: "POST" })
   .middleware([requireAdmin, writeLimit])
   .inputValidator((data: unknown) => parseOrThrow(categoryIdSchema, data))
-  .handler(({ data, context }) =>
-    new CategoryRepository(context.supabase).removeCategory(data.id),
-  );
+  .handler(({ data, context }) => new CategoryRepository(context.supabase).removeCategory(data.id));
 
 export const createSubcategory = createServerFn({ method: "POST" })
   .middleware([requireAdmin, writeLimit])

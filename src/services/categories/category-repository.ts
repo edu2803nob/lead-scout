@@ -62,7 +62,8 @@ export class CategoryRepository {
 
     const [categories, subcategories] = await Promise.all([categoryQuery, subQuery]);
     if (categories.error) fail("Não foi possível carregar as categorias", categories.error);
-    if (subcategories.error) fail("Não foi possível carregar as subcategorias", subcategories.error);
+    if (subcategories.error)
+      fail("Não foi possível carregar as subcategorias", subcategories.error);
 
     const grouped = new Map<string, BusinessSubcategory[]>();
     for (const row of subcategories.data ?? []) {
