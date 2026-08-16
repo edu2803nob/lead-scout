@@ -24,7 +24,7 @@ import type { Lead } from "@/types/lead";
  */
 
 const QUALITY_CLASSES: Record<WebsiteQuality, string> = {
-  EXCELLENT: "bg-score-veryhigh/15 text-score-veryhigh border-score-veryhigh/30",
+  EXCELLENT: "bg-score-very-high/15 text-score-very-high border-score-very-high/30",
   GOOD: "bg-score-high/15 text-score-high border-score-high/30",
   AVERAGE: "bg-score-medium/15 text-score-medium border-score-medium/30",
   WEAK: "bg-score-low/15 text-score-low border-score-low/30",
@@ -33,7 +33,7 @@ const QUALITY_CLASSES: Record<WebsiteQuality, string> = {
 };
 
 const ACTIVITY_CLASSES: Record<SocialActivity, string> = {
-  VERY_ACTIVE: "bg-score-veryhigh/15 text-score-veryhigh border-score-veryhigh/30",
+  VERY_ACTIVE: "bg-score-very-high/15 text-score-very-high border-score-very-high/30",
   ACTIVE: "bg-score-high/15 text-score-high border-score-high/30",
   MODERATE: "bg-score-medium/15 text-score-medium border-score-medium/30",
   INACTIVE: "bg-score-low/15 text-score-low border-score-low/30",
