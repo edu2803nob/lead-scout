@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Radar, Tags, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Radar, Search, Tags, Users } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/leads", label: "Leads", icon: Users },
+  { to: "/prospecting", label: "Prospecção", icon: Search },
   { to: "/settings/categories", label: "Categorias", icon: Tags },
 ] as const;
 
@@ -104,7 +105,7 @@ export function AppShell({ title, description, actions, children }: AppShellProp
       </main>
 
       {/* Mobile bottom navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-border bg-card/95 backdrop-blur md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-card/95 backdrop-blur md:hidden">
         {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
           <Link
             key={to}
