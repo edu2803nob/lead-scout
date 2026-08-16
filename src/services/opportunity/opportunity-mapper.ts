@@ -43,6 +43,6 @@ export function toOpportunityRows(
       fitScore: result.fitScore,
       channelScore: result.channelScore,
       items: result.evidence,
-    } as unknown as OpportunityInsert["evidence"],
+    } as unknown as NonNullable<OpportunityInsert["evidence"]>,
   }));
 }
