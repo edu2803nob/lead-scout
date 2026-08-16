@@ -6,8 +6,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { EmptyState, ErrorState, LoadingState } from "@/components/common/StateViews";
+import { DataPagination } from "@/components/ds/DataPagination";
+import { LeadCard } from "@/components/ds/LeadCard";
+import { StatusBadge } from "@/components/ds/StatusBadge";
 import { AppShell } from "@/components/layout/AppShell";
-import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -184,7 +186,13 @@ function LeadsPage() {
           />
         ) : (
           <>
-            <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-soft">
+            <div className="grid gap-3 md:hidden">
+              {data.items.map((lead) => (
+                <LeadCard key={lead.id} lead={lead} onDelete={setPendingDeleteId} />
+              ))}
+            </div>
+
+            <div className="hidden overflow-x-auto rounded-xl border border-border bg-card shadow-soft md:block">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -222,7 +230,7 @@ function LeadsPage() {
                         )}
                       </TableCell>
                       <TableCell>
-                        <LeadStatusBadge status={lead.status} />
+                        <StatusBadge status={lead.status} />
                       </TableCell>
                       <TableCell className="text-right">
                         <Button
@@ -240,37 +248,13 @@ function LeadsPage() {
               </Table>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-muted-foreground">
-                {data.total} lead(s) · página {data.page} de {data.pageCount}
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={data.page <= 1}
-                  onClick={() =>
-                    void navigate({
-                      search: (previous) => ({ ...previous, page: Math.max(1, previous.page - 1) }),
-                    })
-                  }
-                >
-                  Anterior
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={data.page >= data.pageCount}
-                  onClick={() =>
-                    void navigate({
-                      search: (previous) => ({ ...previous, page: previous.page + 1 }),
-                    })
-                  }
-                >
-                  Próxima
-                </Button>
-              </div>
-            </div>
+            <DataPagination
+              page={data.page}
+              pageCount={data.pageCount}
+              total={data.total}
+              itemLabel="lead(s)"
+              onPageChange={(page) => void navigate({ search: (previous) => ({ ...previous, page }) })}
+            />
           </>
         )}
       </div>
