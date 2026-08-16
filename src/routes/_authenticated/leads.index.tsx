@@ -253,7 +253,9 @@ function LeadsPage() {
               pageCount={data.pageCount}
               total={data.total}
               itemLabel="lead(s)"
-              onPageChange={(page) => void navigate({ search: (previous) => ({ ...previous, page }) })}
+              onPageChange={(page) =>
+                void navigate({ search: (previous) => ({ ...previous, page }) })
+              }
             />
           </>
         )}

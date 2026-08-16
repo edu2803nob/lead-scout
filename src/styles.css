@@ -77,11 +77,9 @@
   --color-score-low: var(--score-low);
 }
 
-
 :root {
   --radius: 0.75rem;
-  --font-display:
-    "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 
   --background: oklch(0.985 0.006 240);
@@ -136,7 +134,6 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.6 0.14 185);
 }
-
 
 .dark {
   --background: oklch(0.129 0.042 264.695);

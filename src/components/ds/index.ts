@@ -93,7 +93,11 @@ export { EmptyState, ErrorState, LoadingState } from "@/components/common/StateV
 
 // Domain-aware components
 export { ScoreBadge, type ScoreBadgeProps } from "@/components/ds/ScoreBadge";
-export { StatusBadge, LEAD_STATUS_CLASSES, type StatusBadgeProps } from "@/components/ds/StatusBadge";
+export {
+  StatusBadge,
+  LEAD_STATUS_CLASSES,
+  type StatusBadgeProps,
+} from "@/components/ds/StatusBadge";
 export { LeadCard, type LeadCardProps } from "@/components/ds/LeadCard";
 export { DataPagination, type DataPaginationProps } from "@/components/ds/DataPagination";
 

@@ -43,9 +43,7 @@ export function ScoreBadge({ score, showLabel = true, size = "md", className }: 
     >
       <span aria-hidden className="size-1.5 rounded-full bg-current" />
       {value}
-      {showLabel ? (
-        <span className="font-medium opacity-80">{SCORE_BAND_LABELS[band]}</span>
-      ) : null}
+      {showLabel ? <span className="font-medium opacity-80">{SCORE_BAND_LABELS[band]}</span> : null}
     </span>
   );
 }
