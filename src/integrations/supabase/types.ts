@@ -14,7 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          address: string | null
+          business_category: string | null
+          business_subcategory: string | null
+          city: string | null
+          company_name: string
+          country: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          has_website: boolean
+          id: string
+          latitude: number | null
+          longitude: number | null
+          phone: string | null
+          source: string
+          state: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+          user_id: string
+          website_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          business_category?: string | null
+          business_subcategory?: string | null
+          city?: string | null
+          company_name: string
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          has_website?: boolean
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          phone?: string | null
+          source?: string
+          state?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          user_id: string
+          website_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          business_category?: string | null
+          business_subcategory?: string | null
+          city?: string | null
+          company_name?: string
+          country?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          has_website?: boolean
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          phone?: string | null
+          source?: string
+          state?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          user_id?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +112,19 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lead_status:
+        | "NEW"
+        | "QUALIFIED"
+        | "CONTACT_READY"
+        | "CONTACTED"
+        | "RESPONDED"
+        | "MEETING"
+        | "PROPOSAL"
+        | "NEGOTIATION"
+        | "WON"
+        | "LOST"
+        | "NO_INTEREST"
+        | "NO_RESPONSE"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +251,21 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lead_status: [
+        "NEW",
+        "QUALIFIED",
+        "CONTACT_READY",
+        "CONTACTED",
+        "RESPONDED",
+        "MEETING",
+        "PROPOSAL",
+        "NEGOTIATION",
+        "WON",
+        "LOST",
+        "NO_INTEREST",
+        "NO_RESPONSE",
+      ],
+    },
   },
 } as const
