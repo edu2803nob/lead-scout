@@ -1,5 +1,6 @@
 /** Input sanitization helpers used by the validation schemas. */
 
+// eslint-disable-next-line no-control-regex -- intentional: strip control chars from input
 const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
 const HTML_TAG = /<[^>]*>/g;
 const LIKE_WILDCARDS = /[%_,()]/g;
