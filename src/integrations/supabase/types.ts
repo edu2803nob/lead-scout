@@ -624,37 +624,73 @@ export type Database = {
       }
       prospection_results: {
         Row: {
+          address: string | null
+          city: string | null
           created_at: string
           google_place_id: string | null
           id: string
           imported: boolean
+          latitude: number | null
           lead_id: string | null
+          longitude: number | null
+          name: string | null
+          neighborhood: string | null
+          phone: string | null
           prospection_id: string
+          provider_category: string | null
+          rating: number | null
           raw_payload: Json
+          review_count: number | null
+          state: string | null
           updated_at: string
           user_id: string
+          website_url: string | null
         }
         Insert: {
+          address?: string | null
+          city?: string | null
           created_at?: string
           google_place_id?: string | null
           id?: string
           imported?: boolean
+          latitude?: number | null
           lead_id?: string | null
+          longitude?: number | null
+          name?: string | null
+          neighborhood?: string | null
+          phone?: string | null
           prospection_id: string
+          provider_category?: string | null
+          rating?: number | null
           raw_payload?: Json
+          review_count?: number | null
+          state?: string | null
           updated_at?: string
           user_id: string
+          website_url?: string | null
         }
         Update: {
+          address?: string | null
+          city?: string | null
           created_at?: string
           google_place_id?: string | null
           id?: string
           imported?: boolean
+          latitude?: number | null
           lead_id?: string | null
+          longitude?: number | null
+          name?: string | null
+          neighborhood?: string | null
+          phone?: string | null
           prospection_id?: string
+          provider_category?: string | null
+          rating?: number | null
           raw_payload?: Json
+          review_count?: number | null
+          state?: string | null
           updated_at?: string
           user_id?: string
+          website_url?: string | null
         }
         Relationships: [
           {
@@ -677,9 +713,15 @@ export type Database = {
         Row: {
           category: string | null
           city: string | null
+          completed_at: string | null
           created_at: string
+          error_message: string | null
+          found_count: number
           id: string
+          imported_count: number
           name: string
+          neighborhood: string | null
+          provider: string
           radius: number | null
           requested_limit: number
           state: string | null
@@ -691,9 +733,15 @@ export type Database = {
         Insert: {
           category?: string | null
           city?: string | null
+          completed_at?: string | null
           created_at?: string
+          error_message?: string | null
+          found_count?: number
           id?: string
+          imported_count?: number
           name: string
+          neighborhood?: string | null
+          provider?: string
           radius?: number | null
           requested_limit?: number
           state?: string | null
@@ -705,9 +753,15 @@ export type Database = {
         Update: {
           category?: string | null
           city?: string | null
+          completed_at?: string | null
           created_at?: string
+          error_message?: string | null
+          found_count?: number
           id?: string
+          imported_count?: number
           name?: string
+          neighborhood?: string | null
+          provider?: string
           radius?: number | null
           requested_limit?: number
           state?: string | null
