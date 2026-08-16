@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { leadInputSchema, leadUpdateSchema, listLeadsSchema } from "@/lib/validation/lead";
+import { leadInputSchema, updateLeadSchema, listLeadsSchema } from "@/lib/validation/lead";
 
 describe("leadInputSchema", () => {
   it("aceita um lead mínimo válido", () => {
@@ -34,9 +34,9 @@ describe("leadInputSchema", () => {
   });
 });
 
-describe("leadUpdateSchema", () => {
+describe("updateLeadSchema", () => {
   it("exige um id", () => {
-    expect(leadUpdateSchema.safeParse({ companyName: "Empresa X" }).success).toBe(false);
+    expect(updateLeadSchema.safeParse({ companyName: "Empresa X" }).success).toBe(false);
   });
 });
 
