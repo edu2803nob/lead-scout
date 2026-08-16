@@ -79,6 +79,7 @@ export interface Lead {
   instagramPostCount: number | null;
   instagramLastPostAt: string | null;
   hasWhatsapp: boolean;
+  businessModel: string | null;
   createdAt: string;
   updatedAt: string;
 }

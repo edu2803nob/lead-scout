@@ -34,7 +34,7 @@ import type {
 
 const DAY_MS = 86_400_000;
 
-function clamp(value: number, max = SCORE_BOUNDS.max): number {
+function clamp(value: number, max: number = SCORE_BOUNDS.max): number {
   if (!Number.isFinite(value)) return SCORE_BOUNDS.min;
   return Math.min(max, Math.max(SCORE_BOUNDS.min, value));
 }

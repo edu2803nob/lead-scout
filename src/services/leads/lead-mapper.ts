@@ -37,6 +37,7 @@ export function toLead(row: LeadRow): Lead {
     instagramPostCount: row.instagram_post_count,
     instagramLastPostAt: row.instagram_last_post_at,
     hasWhatsapp: row.has_whatsapp,
+    businessModel: row.business_model,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
