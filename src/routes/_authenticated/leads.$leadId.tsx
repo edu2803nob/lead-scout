@@ -194,6 +194,12 @@ function LeadDetailPage() {
             onCalculate={() => scoreMutation.mutate()}
           />
 
+          <LeadOpportunityPanel
+            result={opportunity}
+            pending={opportunityMutation.isPending}
+            onAnalyze={() => opportunityMutation.mutate()}
+          />
+
           <Card className="shadow-soft">
             <CardHeader>
               <CardTitle className="text-base">Descrição</CardTitle>
