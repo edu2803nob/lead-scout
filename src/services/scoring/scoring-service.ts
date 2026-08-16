@@ -42,7 +42,8 @@ export class ScoringRepository implements ScoringStore {
       .limit(1)
       .maybeSingle();
 
-    if (readError) throw new AppError("Não foi possível ler o score do lead.", { code: "DB_ERROR" });
+    if (readError)
+      throw new AppError("Não foi possível ler o score do lead.", { code: "DB_ERROR" });
 
     const { error } = existing
       ? await this.db

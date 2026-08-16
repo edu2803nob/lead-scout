@@ -48,9 +48,7 @@ export function toScorableLead(lead: Lead): ScorableLead {
   };
 }
 
-export function toScoreColumns(
-  result: LeadScoreResult,
-): Omit<ScoreInsert, "user_id" | "lead_id"> {
+export function toScoreColumns(result: LeadScoreResult): Omit<ScoreInsert, "user_id" | "lead_id"> {
   return {
     digital_presence_score: result.digitalPresenceScore,
     audience_score: result.audienceScore,

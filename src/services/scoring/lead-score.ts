@@ -308,7 +308,10 @@ function reputation(lead: ScorableLead, add: FactorCollector) {
   if (rating !== null) {
     const span = REPUTATION_CONFIG.ratingCeiling - REPUTATION_CONFIG.ratingFloor;
     const normalized = (rating - REPUTATION_CONFIG.ratingFloor) / span;
-    ratingPoints = clamp(normalized * REPUTATION_CONFIG.ratingMaxPoints, REPUTATION_CONFIG.ratingMaxPoints);
+    ratingPoints = clamp(
+      normalized * REPUTATION_CONFIG.ratingMaxPoints,
+      REPUTATION_CONFIG.ratingMaxPoints,
+    );
     add.add(
       "REPUTATION",
       "GOOGLE_RATING",
@@ -385,7 +388,9 @@ function commercialPotential(lead: ScorableLead, add: FactorCollector) {
   }
 
   return clamp(
-    modelScore * C.modelWeight + contactScore * C.contactabilityWeight + categoryScore * C.categoryWeight,
+    modelScore * C.modelWeight +
+      contactScore * C.contactabilityWeight +
+      categoryScore * C.categoryWeight,
   );
 }
 

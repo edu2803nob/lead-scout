@@ -80,10 +80,14 @@ describe("classificação", () => {
 
 describe("atividade social", () => {
   it("deriva do último post e nunca inventa", () => {
-    expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(2) }), NOW)).toBe("VERY_ACTIVE");
+    expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(2) }), NOW)).toBe(
+      "VERY_ACTIVE",
+    );
     expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(20) }), NOW)).toBe("ACTIVE");
     expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(60) }), NOW)).toBe("MODERATE");
-    expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(400) }), NOW)).toBe("INACTIVE");
+    expect(resolveSocialActivity(lead({ instagramLastPostAt: daysAgo(400) }), NOW)).toBe(
+      "INACTIVE",
+    );
     expect(resolveSocialActivity(lead(), NOW)).toBe("UNKNOWN");
     expect(resolveSocialActivity(lead({ instagramLastPostAt: "não-é-data" }), NOW)).toBe("UNKNOWN");
   });
@@ -204,7 +208,11 @@ describe("regras de negócio do score", () => {
 
   it("seguidores isolados não dominam o score", () => {
     const onlyFollowers = calculateLeadScore(
-      lead({ instagramUsername: "a", instagramFollowers: 1_000_000, instagramLastPostAt: daysAgo(1) }),
+      lead({
+        instagramUsername: "a",
+        instagramFollowers: 1_000_000,
+        instagramLastPostAt: daysAgo(1),
+      }),
       NOW,
     );
     expect(onlyFollowers.audienceScore).toBeGreaterThan(60);
