@@ -1,7 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
-import { toUserMessage } from "@/lib/errors";
 import { redactSecrets } from "@/lib/security/redact";
 import type { EnrichmentPatch, EnrichmentResult, ProviderOutcome } from "@/types/enrichment";
 import {
@@ -98,7 +97,7 @@ export class EnrichmentService {
           provider: provider.id,
           label: provider.label,
           status: "FAILED",
-          message: toUserMessage(error),
+          message: "Não foi possível consultar esta fonte agora.",
         });
       }
     }
