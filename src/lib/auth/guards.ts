@@ -10,7 +10,7 @@ import { consumeRateLimit, type RateLimitRule } from "@/lib/security/rate-limit"
  * Rules enforced here:
  * - the session is always validated server-side from the Bearer token;
  * - the user id comes from the verified token claims, never from client input;
- * - admin-only endpoints check the role in the database (`public.has_role`).
+ * - admin-only endpoints read the caller's own role rows (RLS-scoped).
  */
 
 export class UnauthorizedError extends AppError {
