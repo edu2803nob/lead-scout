@@ -99,7 +99,10 @@ describe("LLMService.analyzeStructuredData", () => {
   });
 
   it("recupera de um JSON inválido inicial e valida a segunda tentativa", async () => {
-    const provider = fakeProvider([completion("{quebrado"), completion('{"summary":"ok","score":5}')]);
+    const provider = fakeProvider([
+      completion("sem json aqui"),
+      completion('{"summary":"ok","score":5}'),
+    ]);
     const result = await service(provider).analyzeStructuredData(input);
     expect(result.telemetry.attempts).toBe(2);
   });
