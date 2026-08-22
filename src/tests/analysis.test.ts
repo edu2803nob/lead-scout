@@ -173,8 +173,6 @@ describe("analysis payload", () => {
   });
 
   it("sends only the fields needed for the commercial analysis", () => {
-    const { calculateLeadScore } = require("@/services/scoring/lead-score");
-    void calculateLeadScore;
     const payload = buildAnalysisPayload({
       lead: target,
       score: {
