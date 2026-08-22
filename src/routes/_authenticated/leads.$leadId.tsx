@@ -6,17 +6,20 @@ import { toast } from "sonner";
 import { ErrorState, LoadingState } from "@/components/common/StateViews";
 import { AppShell } from "@/components/layout/AppShell";
 import { LeadForm } from "@/components/leads/LeadForm";
+import { LeadAnalysisPanel } from "@/components/leads/LeadAnalysisPanel";
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
 import { LeadOpportunityPanel } from "@/components/leads/LeadOpportunityPanel";
 import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { analyzeLeadCommercially } from "@/lib/analysis.functions";
 import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
 import { analyzeLeadOpportunity } from "@/lib/opportunity.functions";
 import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
+import { analysisQueryKeys, leadAnalysisQuery } from "@/lib/query/analysis-queries";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
 import type { EnrichmentResult } from "@/types/enrichment";
@@ -75,6 +78,16 @@ function LeadDetailPage() {
   );
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
+  const analysisQuery = useQuery(leadAnalysisQuery(leadId));
+
+  const analysisMutation = useMutation({
+    mutationFn: () => analyzeLeadCommercially({ data: { leadId } }),
+    onSuccess: async (result) => {
+      toast.success(`Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`);
+      await queryClient.invalidateQueries({ queryKey: analysisQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
 
   const mutation = useMutation({
     mutationFn: (input: LeadInput) => updateLead({ data: { id: leadId, ...input } }),
@@ -207,6 +220,13 @@ function LeadDetailPage() {
             result={score}
             pending={scoreMutation.isPending}
             onCalculate={() => scoreMutation.mutate()}
+          />
+
+          <LeadAnalysisPanel
+            analysis={analysisQuery.data}
+            loading={analysisQuery.isPending}
+            pending={analysisMutation.isPending}
+            onAnalyze={() => analysisMutation.mutate()}
           />
 
           <LeadOpportunityPanel
