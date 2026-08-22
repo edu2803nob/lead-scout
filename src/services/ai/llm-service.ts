@@ -7,11 +7,7 @@ import type { AICallTelemetry, AIStructuredResult } from "@/types/ai";
 import { assertCallCost, assertSubjectBudget, recordSpend } from "./cost-guard";
 import { parseStructuredResponse } from "./json";
 import { createProvider, readLLMConfig } from "./provider-factory";
-import {
-  AIInvalidResponseError,
-  isRetryableAIError,
-  type AIProvider,
-} from "./provider";
+import { AIInvalidResponseError, isRetryableAIError, type AIProvider } from "./provider";
 
 export interface LLMServiceOptions {
   maxAttempts?: number;
@@ -88,11 +84,7 @@ export class LLMService {
 
     // Cost control before any network call.
     assertCallCost(
-      estimateCostUsd(
-        this.provider.model,
-        estimateTokens(system + prompt),
-        maxOutputTokens,
-      ),
+      estimateCostUsd(this.provider.model, estimateTokens(system + prompt), maxOutputTokens),
     );
     if (input.subject) assertSubjectBudget(input.subject, this.now());
 
@@ -195,6 +187,7 @@ function logTelemetry(telemetry: AICallTelemetry): void {
 }
 
 function logFailure(task: string, provider: AIProvider, attempts: number, error: unknown): void {
-  const code = error instanceof Error ? (error as { code?: string }).code ?? error.name : "unknown";
+  const code =
+    error instanceof Error ? ((error as { code?: string }).code ?? error.name) : "unknown";
   console.error(`[ai] ${task} failed provider=${provider.name} attempts=${attempts} code=${code}`);
 }

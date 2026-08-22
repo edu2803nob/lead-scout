@@ -8,7 +8,10 @@ import type { AICompletionRequest, AICompletionResult } from "@/types/ai";
 export interface AIProvider {
   readonly name: string;
   readonly model: string;
-  complete(request: AICompletionRequest, options?: { signal?: AbortSignal }): Promise<AICompletionResult>;
+  complete(
+    request: AICompletionRequest,
+    options?: { signal?: AbortSignal },
+  ): Promise<AICompletionResult>;
 }
 
 export class AIConfigError extends AppError {

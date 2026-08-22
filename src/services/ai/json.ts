@@ -9,7 +9,11 @@ import { AIInvalidResponseError } from "./provider";
 
 /** Pulls the first balanced JSON object out of the text (handles code fences). */
 export function extractJsonObject(raw: string): string {
-  const text = raw.trim().replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
+  const text = raw
+    .trim()
+    .replace(/^```(?:json)?/i, "")
+    .replace(/```$/, "")
+    .trim();
   const start = text.indexOf("{");
   if (start === -1) throw new AIInvalidResponseError("NOT_JSON", "no object start");
 

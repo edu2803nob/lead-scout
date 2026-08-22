@@ -225,7 +225,9 @@ describe("configuração", () => {
   });
 
   it("provedor desconhecido é rejeitado", () => {
-    expect(() => readLLMConfig({ LLM_PROVIDER: "acme", LLM_API_KEY: "key" })).toThrow(AIConfigError);
+    expect(() => readLLMConfig({ LLM_PROVIDER: "acme", LLM_API_KEY: "key" })).toThrow(
+      AIConfigError,
+    );
   });
 });
 
@@ -236,6 +238,8 @@ describe("parseStructuredResponse", () => {
   });
 
   it("rejeita objeto não balanceado", () => {
-    expect(() => parseStructuredResponse(schema, '{"summary":"ok"')).toThrow(AIInvalidResponseError);
+    expect(() => parseStructuredResponse(schema, '{"summary":"ok"')).toThrow(
+      AIInvalidResponseError,
+    );
   });
 });
