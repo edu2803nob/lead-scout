@@ -193,6 +193,7 @@ describe("analysis payload", () => {
         fitScore: 70,
         channelScore: 75,
         opportunityTypes: [],
+        recommendedSolution: "Landing page de conversão",
         evidence: [
           { code: "NO_SITE", source: "WEBSITE", label: "Sem website", detail: "Nenhum site encontrado" },
         ],
