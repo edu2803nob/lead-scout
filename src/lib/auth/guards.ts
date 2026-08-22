@@ -10,7 +10,7 @@ import { consumeRateLimit, type RateLimitRule } from "@/lib/security/rate-limit"
  * Rules enforced here:
  * - the session is always validated server-side from the Bearer token;
  * - the user id comes from the verified token claims, never from client input;
- * - admin-only endpoints check the role in the database (`public.has_role`).
+ * - admin-only endpoints read the caller's own role rows (RLS-scoped).
  */
 
 export class UnauthorizedError extends AppError {
@@ -30,17 +30,19 @@ export class ForbiddenError extends AppError {
 /** Session guard: use on every protected server function. */
 export const requireAuth = requireSupabaseAuth;
 
-/** Admin guard: session + `admin` role checked in the database. */
+/** Admin guard: session + `admin` role read from the database as the caller. */
 export const requireAdmin = createMiddleware({ type: "function" })
   .middleware([requireSupabaseAuth])
   .server(async ({ next, context }) => {
-    const { data, error } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const { data, error } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
 
     if (error) throw new ForbiddenError();
-    if (data !== true) throw new ForbiddenError();
+    if (!data) throw new ForbiddenError();
 
     return next({ context: { isAdmin: true as const } });
   });

@@ -31,11 +31,13 @@ export const listCategoryTree = createServerFn({ method: "GET" })
 export const isCurrentUserAdmin = createServerFn({ method: "GET" })
   .middleware([requireAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
-    return { isAdmin: !error && data === true };
+    const { data, error } = await context.supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    return { isAdmin: !error && Boolean(data) };
   });
 
 export const createCategory = createServerFn({ method: "POST" })
