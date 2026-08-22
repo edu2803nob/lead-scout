@@ -75,6 +75,16 @@ function LeadDetailPage() {
   );
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
+  const analysisQuery = useQuery(leadAnalysisQuery(leadId));
+
+  const analysisMutation = useMutation({
+    mutationFn: () => analyzeLeadCommercially({ data: { leadId } }),
+    onSuccess: async (result) => {
+      toast.success(`Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`);
+      await queryClient.invalidateQueries({ queryKey: analysisQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
 
   const mutation = useMutation({
     mutationFn: (input: LeadInput) => updateLead({ data: { id: leadId, ...input } }),
