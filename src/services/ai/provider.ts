@@ -20,7 +20,7 @@ export class AIConfigError extends AppError {
 
 export class AIProviderError extends AppError {
   /** Upstream HTTP status, when available. */
-  readonly providerStatus?: number;
+  readonly providerStatus: number | undefined;
   readonly retryable: boolean;
 
   constructor(message: string, options?: { providerStatus?: number; retryable?: boolean }) {
