@@ -190,8 +190,10 @@ export type Database = {
       }
       lead_ai_analyses: {
         Row: {
+          business_profile: string | null
           confidence: number | null
           created_at: string
+          evidence: Json
           id: string
           lead_id: string
           model: string
@@ -200,6 +202,7 @@ export type Database = {
           provider: string
           purchase_potential: number | null
           reasoning: string | null
+          reasoning_items: Json
           recommended_approach: string | null
           recommended_offer: string | null
           suggested_message: string | null
@@ -208,8 +211,10 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          business_profile?: string | null
           confidence?: number | null
           created_at?: string
+          evidence?: Json
           id?: string
           lead_id: string
           model: string
@@ -218,6 +223,7 @@ export type Database = {
           provider: string
           purchase_potential?: number | null
           reasoning?: string | null
+          reasoning_items?: Json
           recommended_approach?: string | null
           recommended_offer?: string | null
           suggested_message?: string | null
@@ -226,8 +232,10 @@ export type Database = {
           user_id: string
         }
         Update: {
+          business_profile?: string | null
           confidence?: number | null
           created_at?: string
+          evidence?: Json
           id?: string
           lead_id?: string
           model?: string
@@ -236,6 +244,7 @@ export type Database = {
           provider?: string
           purchase_potential?: number | null
           reasoning?: string | null
+          reasoning_items?: Json
           recommended_approach?: string | null
           recommended_offer?: string | null
           suggested_message?: string | null
