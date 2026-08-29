@@ -215,19 +215,31 @@ describe("commercial analysis schema", () => {
     expect(commercialAnalysisSchema.parse(validResponse).purchasePotential).toBe(82);
   });
 
-  it("rejects unknown evidence kinds and out-of-range values", () => {
+  it("rejects unknown evidence kinds", () => {
     expect(
       commercialAnalysisSchema.safeParse({
         ...validResponse,
         evidence: [{ kind: "GUESS", statement: "algo" }],
       }).success,
     ).toBe(false);
+  });
+
+  it("normalises numeric fields written as text or out of range", () => {
     expect(
-      commercialAnalysisSchema.safeParse({ ...validResponse, confidence: 3 }).success,
-    ).toBe(false);
+      commercialAnalysisSchema.parse({ ...validResponse, purchasePotential: 140 })
+        .purchasePotential,
+    ).toBe(100);
+    expect(commercialAnalysisSchema.parse({ ...validResponse, confidence: 80 }).confidence).toBe(
+      0.8,
+    );
     expect(
-      commercialAnalysisSchema.safeParse({ ...validResponse, purchasePotential: 140 }).success,
-    ).toBe(false);
+      commercialAnalysisSchema.parse({ ...validResponse, purchasePotential: "Alto" })
+        .purchasePotential,
+    ).toBe(75);
+    expect(
+      commercialAnalysisSchema.parse({ ...validResponse, evidence: [{ kind: "fato", statement: "sem site" }] })
+        .evidence[0]!.kind,
+    ).toBe("FACT");
   });
 
   it("rejects incomplete responses (missing lists)", () => {
