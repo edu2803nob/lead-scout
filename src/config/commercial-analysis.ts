@@ -77,7 +77,7 @@ export const ANALYSIS_LIMITS = {
   maxStatementChars: 400,
   /** Evidence items sent as context to the model. */
   maxContextEvidence: 12,
-  maxOutputTokens: 1_200,
+  maxOutputTokens: 2_600,
   temperature: 0.2,
   task: "lead.commercial-analysis",
 } as const;
