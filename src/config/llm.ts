@@ -20,7 +20,7 @@ export const LLM_DEFAULTS = {
   retryBaseDelayMs: 500,
   temperature: 0.2,
   /** Hard cap for generated tokens. */
-  maxOutputTokens: 1_200,
+  maxOutputTokens: 3_000,
   /** Hard cap for prompt size (characters) — prompts above this are rejected. */
   maxPromptChars: 12_000,
   /** Maximum characters allowed per single input field value. */
