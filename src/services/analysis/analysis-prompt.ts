@@ -81,7 +81,10 @@ export function buildAnalysisInstructions(profile: BusinessProfile): string {
     "Não repita os números de leadScore e opportunityScore como se fossem seus cálculos: use-os como contexto.",
     "`purchasePotential` é 0-100 e `confidence` é 0-1 (baixa confiança quando há poucos dados observados).",
     "Escreva em português do Brasil, objetivo, sem promessas irreais.",
-    "Responda no formato: {purchasePotential, confidence, summary, painPoints[], opportunities[], recommendedOffer, recommendedApproach, reasoning[], evidence[{kind, statement, source}]}.",
+    "`purchasePotential` e `confidence` devem ser NÚMEROS (nunca texto como \"Alto\").",
+    `Limites obrigatórios: no máximo ${ANALYSIS_LIMITS.maxListItems} itens por lista, cada item com no máximo 220 caracteres, \`summary\` com no máximo 600 caracteres. Seja conciso para não truncar a resposta.`,
+    "Responda EXATAMENTE neste formato JSON:",
+    '{"purchasePotential": 72, "confidence": 0.6, "summary": "...", "painPoints": ["..."], "opportunities": ["..."], "recommendedOffer": "...", "recommendedApproach": "...", "reasoning": ["..."], "evidence": [{"kind": "FACT", "statement": "...", "source": "google"}]}',
   ].join("\n");
 }
 
