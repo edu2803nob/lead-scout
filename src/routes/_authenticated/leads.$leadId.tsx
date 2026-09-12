@@ -83,6 +83,17 @@ function LeadDetailPage() {
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
   const analysisQuery = useQuery(leadAnalysisQuery(leadId));
+  const auditQuery = useQuery(leadDigitalAuditQuery(leadId));
+
+  const auditMutation = useMutation({
+    mutationFn: () => auditLeadDigitally({ data: { leadId } }),
+    onSuccess: async (result) => {
+      toast.success(`Auditoria digital concluída (landing page ${result.landingPageOpportunity}).`);
+      await queryClient.invalidateQueries({ queryKey: auditQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
 
   const analysisMutation = useMutation({
     mutationFn: () => analyzeLeadCommercially({ data: { leadId } }),
