@@ -11,8 +11,10 @@ import { LeadDigitalAuditPanel } from "@/components/leads/LeadDigitalAuditPanel"
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
 import { LeadOfferPanel } from "@/components/leads/LeadOfferPanel";
 import { LeadOpportunityPanel } from "@/components/leads/LeadOpportunityPanel";
+import { LeadOutreachPanel } from "@/components/leads/LeadOutreachPanel";
 import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { analyzeLeadCommercially } from "@/lib/analysis.functions";
@@ -21,13 +23,21 @@ import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
 import { recommendLeadOffer } from "@/lib/offer.functions";
 import { analyzeLeadOpportunity } from "@/lib/opportunity.functions";
+import {
+  generateLeadOutreach,
+  markLeadOutreachUsed,
+  updateLeadOutreachMessage,
+} from "@/lib/outreach.functions";
 import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
 import { analysisQueryKeys, leadAnalysisQuery } from "@/lib/query/analysis-queries";
 import { auditQueryKeys, leadDigitalAuditQuery } from "@/lib/query/audit-queries";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import { leadOfferQuery, offerQueryKeys } from "@/lib/query/offer-queries";
+import { leadOutreachQuery, outreachQueryKeys } from "@/lib/query/outreach-queries";
+import type { OutreachStyle } from "@/config/outreach";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
+
 import type { EnrichmentResult } from "@/types/enrichment";
 import type { Lead } from "@/types/lead";
 import type { LandingPageOpportunityResult } from "@/types/opportunity";
@@ -87,6 +97,41 @@ function LeadDetailPage() {
   const analysisQuery = useQuery(leadAnalysisQuery(leadId));
   const auditQuery = useQuery(leadDigitalAuditQuery(leadId));
   const offerQuery = useQuery(leadOfferQuery(leadId));
+  const outreachQuery = useQuery(leadOutreachQuery(leadId));
+
+  const [outreachPending, setOutreachPending] = useState<OutreachStyle | "ALL" | null>(null);
+
+  const outreachMutation = useMutation({
+    mutationFn: (style?: OutreachStyle) =>
+      generateLeadOutreach({ data: { leadId, ...(style ? { styles: [style] } : {}) } }),
+    onMutate: (style) => setOutreachPending(style ?? "ALL"),
+    onSuccess: async () => {
+      toast.success("Sugestões de abordagem geradas. Revise antes de enviar.");
+      await queryClient.invalidateQueries({ queryKey: outreachQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+    onSettled: () => setOutreachPending(null),
+  });
+
+  const outreachEditMutation = useMutation({
+    mutationFn: (input: { id: string; message: string }) =>
+      updateLeadOutreachMessage({ data: input }),
+    onSuccess: async () => {
+      toast.success("Abordagem editada e salva.");
+      await queryClient.invalidateQueries({ queryKey: outreachQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
+  const outreachUsedMutation = useMutation({
+    mutationFn: (id: string) => markLeadOutreachUsed({ data: { id } }),
+    onSuccess: async () => {
+      toast.success("Abordagem registrada no histórico do lead.");
+      await queryClient.invalidateQueries({ queryKey: outreachQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
+
 
   const offerMutation = useMutation({
     mutationFn: () => recommendLeadOffer({ data: { leadId } }),
@@ -276,6 +321,20 @@ function LeadDetailPage() {
             pending={offerMutation.isPending}
             onRecommend={() => offerMutation.mutate()}
           />
+
+          <LeadOutreachPanel
+            messages={outreachQuery.data}
+            loading={outreachQuery.isPending}
+            pendingStyle={outreachPending}
+            savingId={
+              outreachEditMutation.isPending ? outreachEditMutation.variables.id : null
+            }
+            onGenerate={(style) => outreachMutation.mutate(style)}
+            onSave={(id, message) => outreachEditMutation.mutate({ id, message })}
+            onMarkUsed={(id) => outreachUsedMutation.mutate(id)}
+          />
+
+
 
           <Card className="shadow-soft">
             <CardHeader>
