@@ -316,6 +316,77 @@ export type Database = {
           },
         ]
       }
+      lead_offers: {
+        Row: {
+          business_profile: string | null
+          conversion_strategy: string
+          created_at: string
+          id: string
+          lead_id: string
+          linked_problems: Json
+          main_objective: string
+          model: string
+          offer_title: string
+          offer_type: string
+          primary_cta: string
+          provider: string
+          recommended_sections: Json
+          secondary_cta: string | null
+          secondary_offer_type: string | null
+          updated_at: string
+          user_id: string
+          value_proposition: string
+        }
+        Insert: {
+          business_profile?: string | null
+          conversion_strategy: string
+          created_at?: string
+          id?: string
+          lead_id: string
+          linked_problems?: Json
+          main_objective: string
+          model: string
+          offer_title: string
+          offer_type: string
+          primary_cta: string
+          provider: string
+          recommended_sections?: Json
+          secondary_cta?: string | null
+          secondary_offer_type?: string | null
+          updated_at?: string
+          user_id: string
+          value_proposition: string
+        }
+        Update: {
+          business_profile?: string | null
+          conversion_strategy?: string
+          created_at?: string
+          id?: string
+          lead_id?: string
+          linked_problems?: Json
+          main_objective?: string
+          model?: string
+          offer_title?: string
+          offer_type?: string
+          primary_cta?: string
+          provider?: string
+          recommended_sections?: Json
+          secondary_cta?: string | null
+          secondary_offer_type?: string | null
+          updated_at?: string
+          user_id?: string
+          value_proposition?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_offers_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_scores: {
         Row: {
           audience_score: number
