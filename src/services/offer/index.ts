@@ -1,8 +1,4 @@
-export {
-  OfferRepository,
-  OfferService,
-  collectObservedProblems,
-} from "./offer-service";
+export { OfferRepository, OfferService, collectObservedProblems } from "./offer-service";
 export type { OfferStore } from "./offer-service";
 export { offerRecommendationResponseSchema } from "./offer-schema";
 export type { OfferRecommendationResponse } from "./offer-schema";

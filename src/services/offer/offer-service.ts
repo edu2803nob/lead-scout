@@ -10,7 +10,11 @@ import { toOpportunityLead } from "@/services/opportunity/opportunity-mapper";
 import type { StoredCommercialAnalysis } from "@/types/analysis";
 import type { StoredDigitalAudit } from "@/types/audit";
 import type { Lead } from "@/types/lead";
-import type { OfferLinkedProblem, OfferRecommendationResult, StoredOfferRecommendation } from "@/types/offer";
+import type {
+  OfferLinkedProblem,
+  OfferRecommendationResult,
+  StoredOfferRecommendation,
+} from "@/types/offer";
 
 import { toOfferColumns, toOfferResult, toStoredOffer } from "./offer-mapper";
 import { buildOfferInstructions, buildOfferPayload } from "./offer-prompt";
@@ -107,9 +111,11 @@ export function collectObservedProblems(
 
   if (fromAudit.length > 0) return fromAudit.slice(0, OFFER_LIMITS.maxLinkedProblems);
 
-  return (analysis?.painPoints ?? [])
-    .slice(0, OFFER_LIMITS.maxLinkedProblems)
-    .map((problem) => ({ area: "DIGITAL_PRESENCE" as const, severity: "MEDIUM" as const, problem }));
+  return (analysis?.painPoints ?? []).slice(0, OFFER_LIMITS.maxLinkedProblems).map((problem) => ({
+    area: "DIGITAL_PRESENCE" as const,
+    severity: "MEDIUM" as const,
+    problem,
+  }));
 }
 
 /**

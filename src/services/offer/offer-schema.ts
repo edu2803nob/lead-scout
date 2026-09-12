@@ -139,7 +139,11 @@ export const offerLinkedProblemSchema = z.object({
 
 function toArray(max: number) {
   return (value: unknown): unknown => {
-    const items = Array.isArray(value) ? value : value === undefined || value === null ? [] : [value];
+    const items = Array.isArray(value)
+      ? value
+      : value === undefined || value === null
+        ? []
+        : [value];
     return items.slice(0, max);
   };
 }

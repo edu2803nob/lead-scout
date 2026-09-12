@@ -60,8 +60,8 @@ export function LeadOfferPanel({ offer, loading, pending, onRecommend }: LeadOff
           <p className="text-sm text-muted-foreground">Carregando oferta salva...</p>
         ) : !offer ? (
           <p className="text-sm text-muted-foreground">
-            Nenhuma oferta definida. Execute a auditoria digital ou a análise comercial primeiro —
-            a oferta precisa de um problema comercial identificado.
+            Nenhuma oferta definida. Execute a auditoria digital ou a análise comercial primeiro — a
+            oferta precisa de um problema comercial identificado.
           </p>
         ) : (
           <>
