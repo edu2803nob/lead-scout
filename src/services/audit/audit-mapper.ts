@@ -83,12 +83,16 @@ export function toAuditColumns(
     conversion_opportunity: result.conversionOpportunity,
     landing_page_opportunity: result.landingPageOpportunity,
     audit_summary: result.auditSummary,
-    conversion_problems: result.conversionProblems as unknown as AuditInsert["conversion_problems"],
-    recommended_sections:
-      result.recommendedSections as unknown as AuditInsert["recommended_sections"],
-    evidence: result.evidence as unknown as AuditInsert["evidence"],
+    conversion_problems: result.conversionProblems as unknown as NonNullable<
+      AuditInsert["conversion_problems"]
+    >,
+    recommended_sections: result.recommendedSections as unknown as NonNullable<
+      AuditInsert["recommended_sections"]
+    >,
+    evidence: result.evidence as unknown as NonNullable<AuditInsert["evidence"]>,
   };
 }
+
 
 function isIn<T extends string>(list: readonly T[], value: unknown): value is T {
   return typeof value === "string" && (list as readonly string[]).includes(value);
