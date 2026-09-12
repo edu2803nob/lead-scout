@@ -9,6 +9,7 @@ import { LeadForm } from "@/components/leads/LeadForm";
 import { LeadAnalysisPanel } from "@/components/leads/LeadAnalysisPanel";
 import { LeadDigitalAuditPanel } from "@/components/leads/LeadDigitalAuditPanel";
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
+import { LeadOfferPanel } from "@/components/leads/LeadOfferPanel";
 import { LeadOpportunityPanel } from "@/components/leads/LeadOpportunityPanel";
 import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
 import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
@@ -18,12 +19,14 @@ import { analyzeLeadCommercially } from "@/lib/analysis.functions";
 import { auditLeadDigitally } from "@/lib/audit.functions";
 import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
+import { recommendLeadOffer } from "@/lib/offer.functions";
 import { analyzeLeadOpportunity } from "@/lib/opportunity.functions";
 import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
 import { analysisQueryKeys, leadAnalysisQuery } from "@/lib/query/analysis-queries";
 import { auditQueryKeys, leadDigitalAuditQuery } from "@/lib/query/audit-queries";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
+import { leadOfferQuery, offerQueryKeys } from "@/lib/query/offer-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
 import type { EnrichmentResult } from "@/types/enrichment";
 import type { Lead } from "@/types/lead";
@@ -83,6 +86,16 @@ function LeadDetailPage() {
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
   const analysisQuery = useQuery(leadAnalysisQuery(leadId));
   const auditQuery = useQuery(leadDigitalAuditQuery(leadId));
+  const offerQuery = useQuery(leadOfferQuery(leadId));
+
+  const offerMutation = useMutation({
+    mutationFn: () => recommendLeadOffer({ data: { leadId } }),
+    onSuccess: async (result) => {
+      toast.success(`Oferta recomendada: ${result.offerTitle}.`);
+      await queryClient.invalidateQueries({ queryKey: offerQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
 
   const auditMutation = useMutation({
     mutationFn: () => auditLeadDigitally({ data: { leadId } }),
@@ -255,6 +268,13 @@ function LeadDetailPage() {
             loading={auditQuery.isPending}
             pending={auditMutation.isPending}
             onAudit={() => auditMutation.mutate()}
+          />
+
+          <LeadOfferPanel
+            offer={offerQuery.data}
+            loading={offerQuery.isPending}
+            pending={offerMutation.isPending}
+            onRecommend={() => offerMutation.mutate()}
           />
 
           <Card className="shadow-soft">
