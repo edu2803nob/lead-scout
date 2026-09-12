@@ -387,6 +387,65 @@ export type Database = {
           },
         ]
       }
+      lead_outreach_messages: {
+        Row: {
+          batch_id: string
+          business_profile: string | null
+          created_at: string
+          id: string
+          is_edited: boolean
+          lead_id: string
+          message: string
+          model: string
+          provider: string
+          reason: string
+          style: Database["public"]["Enums"]["outreach_style"]
+          updated_at: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          batch_id: string
+          business_profile?: string | null
+          created_at?: string
+          id?: string
+          is_edited?: boolean
+          lead_id: string
+          message: string
+          model: string
+          provider: string
+          reason: string
+          style: Database["public"]["Enums"]["outreach_style"]
+          updated_at?: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          batch_id?: string
+          business_profile?: string | null
+          created_at?: string
+          id?: string
+          is_edited?: boolean
+          lead_id?: string
+          message?: string
+          model?: string
+          provider?: string
+          reason?: string
+          style?: Database["public"]["Enums"]["outreach_style"]
+          updated_at?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_outreach_messages_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_scores: {
         Row: {
           audience_score: number
@@ -982,6 +1041,7 @@ export type Database = {
         | "APPOINTMENT"
         | "QUOTE"
         | "DIGITAL_PRESENCE"
+      outreach_style: "CONSULTIVE" | "DIRECT" | "OPPORTUNITY"
       prospection_status:
         | "PENDING"
         | "RUNNING"
@@ -1187,6 +1247,7 @@ export const Constants = {
         "QUOTE",
         "DIGITAL_PRESENCE",
       ],
+      outreach_style: ["CONSULTIVE", "DIRECT", "OPPORTUNITY"],
       prospection_status: [
         "PENDING",
         "RUNNING",
