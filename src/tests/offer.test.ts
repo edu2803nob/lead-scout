@@ -101,6 +101,7 @@ function completion(text: string): AICompletionResult {
     provider: "lovable",
     model: "google/gemini-2.5-flash",
     usage: { inputTokens: 10, outputTokens: 20, totalTokens: 30 },
+    finishReason: "stop",
   };
 }
 
