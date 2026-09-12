@@ -250,6 +250,14 @@ function LeadDetailPage() {
             onAnalyze={() => opportunityMutation.mutate()}
           />
 
+          <LeadDigitalAuditPanel
+            audit={auditQuery.data}
+            loading={auditQuery.isPending}
+            pending={auditMutation.isPending}
+            onAudit={() => auditMutation.mutate()}
+          />
+
+
           <Card className="shadow-soft">
             <CardHeader>
               <CardTitle className="text-base">Descrição</CardTitle>
