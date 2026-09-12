@@ -128,7 +128,15 @@ describe("digital audit prompt", () => {
 
   it("audits every requested dimension", () => {
     const instructions = buildAuditInstructions("SERVICES");
-    for (const topic of ["website", "Instagram", "Google", "CTA", "catálogo", "agendamento", "orçamento"]) {
+    for (const topic of [
+      "website",
+      "Instagram",
+      "Google",
+      "CTA",
+      "catálogo",
+      "agendamento",
+      "orçamento",
+    ]) {
       expect(instructions).toContain(topic);
     }
   });
@@ -181,9 +189,7 @@ describe("digital audit schema", () => {
   });
 
   it("rejects a response without evidence", () => {
-    expect(() =>
-      digitalAuditResponseSchema.parse({ ...modelResponse, evidence: [] }),
-    ).toThrow();
+    expect(() => digitalAuditResponseSchema.parse({ ...modelResponse, evidence: [] })).toThrow();
   });
 });
 
@@ -248,9 +254,9 @@ describe("AuditService", () => {
     expect(stored.digitalPresenceScore).toBe(score.digitalPresenceScore);
     expect(stored.conversionOpportunity).toBe(score.conversionOpportunityScore);
     expect(stored.landingPageOpportunity).toBe(opportunity.opportunityScore);
-    expect(stored.recommendedSections.every((item) =>
-      AUDIT_PROFILE_SECTIONS.GYM.includes(item.section),
-    )).toBe(true);
+    expect(
+      stored.recommendedSections.every((item) => AUDIT_PROFILE_SECTIONS.GYM.includes(item.section)),
+    ).toBe(true);
   });
 
   it("does not persist anything when the response is invalid", async () => {

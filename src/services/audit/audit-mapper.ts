@@ -93,7 +93,6 @@ export function toAuditColumns(
   };
 }
 
-
 function isIn<T extends string>(list: readonly T[], value: unknown): value is T {
   return typeof value === "string" && (list as readonly string[]).includes(value);
 }

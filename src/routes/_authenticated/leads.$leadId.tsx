@@ -30,7 +30,6 @@ import type { Lead } from "@/types/lead";
 import type { LandingPageOpportunityResult } from "@/types/opportunity";
 import type { LeadScoreResult } from "@/types/scoring";
 
-
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
   head: () => ({
     meta: [
@@ -94,11 +93,12 @@ function LeadDetailPage() {
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
   });
 
-
   const analysisMutation = useMutation({
     mutationFn: () => analyzeLeadCommercially({ data: { leadId } }),
     onSuccess: async (result) => {
-      toast.success(`Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`);
+      toast.success(
+        `Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`,
+      );
       await queryClient.invalidateQueries({ queryKey: analysisQueryKeys.detail(leadId) });
     },
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
@@ -256,7 +256,6 @@ function LeadDetailPage() {
             pending={auditMutation.isPending}
             onAudit={() => auditMutation.mutate()}
           />
-
 
           <Card className="shadow-soft">
             <CardHeader>

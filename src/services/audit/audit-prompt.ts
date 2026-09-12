@@ -1,9 +1,5 @@
 import { BUSINESS_PROFILE_CONFIG, type BusinessProfile } from "@/config/commercial-analysis";
-import {
-  AUDIT_LIMITS,
-  AUDIT_PROFILE_SECTIONS,
-  AUDIT_SECTION_LABELS,
-} from "@/config/digital-audit";
+import { AUDIT_LIMITS, AUDIT_PROFILE_SECTIONS, AUDIT_SECTION_LABELS } from "@/config/digital-audit";
 import type { Lead } from "@/types/lead";
 import type { LandingPageOpportunityResult } from "@/types/opportunity";
 import type { LeadScoreResult } from "@/types/scoring";
