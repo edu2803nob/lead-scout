@@ -7,6 +7,7 @@ import { ErrorState, LoadingState } from "@/components/common/StateViews";
 import { AppShell } from "@/components/layout/AppShell";
 import { LeadForm } from "@/components/leads/LeadForm";
 import { LeadAnalysisPanel } from "@/components/leads/LeadAnalysisPanel";
+import { LeadDigitalAuditPanel } from "@/components/leads/LeadDigitalAuditPanel";
 import { LeadEnrichmentPanel } from "@/components/leads/LeadEnrichmentPanel";
 import { LeadOpportunityPanel } from "@/components/leads/LeadOpportunityPanel";
 import { LeadScorePanel } from "@/components/leads/LeadScorePanel";
@@ -14,12 +15,14 @@ import { LeadStatusBadge } from "@/components/leads/LeadStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { analyzeLeadCommercially } from "@/lib/analysis.functions";
+import { auditLeadDigitally } from "@/lib/audit.functions";
 import { enrichLead } from "@/lib/enrichment.functions";
 import { toUserMessage } from "@/lib/errors";
 import { analyzeLeadOpportunity } from "@/lib/opportunity.functions";
 import { scoreLead } from "@/lib/scoring.functions";
 import { updateLead } from "@/lib/leads.functions";
 import { analysisQueryKeys, leadAnalysisQuery } from "@/lib/query/analysis-queries";
+import { auditQueryKeys, leadDigitalAuditQuery } from "@/lib/query/audit-queries";
 import { leadDetailQuery, leadQueryKeys } from "@/lib/query/lead-queries";
 import type { LeadInput, LeadFormValues } from "@/lib/validation/lead";
 import type { EnrichmentResult } from "@/types/enrichment";
@@ -79,11 +82,23 @@ function LeadDetailPage() {
 
   const { data, isPending, isError, error, refetch } = useQuery(leadDetailQuery(leadId));
   const analysisQuery = useQuery(leadAnalysisQuery(leadId));
+  const auditQuery = useQuery(leadDigitalAuditQuery(leadId));
+
+  const auditMutation = useMutation({
+    mutationFn: () => auditLeadDigitally({ data: { leadId } }),
+    onSuccess: async (result) => {
+      toast.success(`Auditoria digital concluída (landing page ${result.landingPageOpportunity}).`);
+      await queryClient.invalidateQueries({ queryKey: auditQueryKeys.detail(leadId) });
+    },
+    onError: (mutationError) => toast.error(toUserMessage(mutationError)),
+  });
 
   const analysisMutation = useMutation({
     mutationFn: () => analyzeLeadCommercially({ data: { leadId } }),
     onSuccess: async (result) => {
-      toast.success(`Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`);
+      toast.success(
+        `Análise comercial concluída (potencial ${Math.round(result.purchasePotential)}).`,
+      );
       await queryClient.invalidateQueries({ queryKey: analysisQueryKeys.detail(leadId) });
     },
     onError: (mutationError) => toast.error(toUserMessage(mutationError)),
@@ -233,6 +248,13 @@ function LeadDetailPage() {
             result={opportunity}
             pending={opportunityMutation.isPending}
             onAnalyze={() => opportunityMutation.mutate()}
+          />
+
+          <LeadDigitalAuditPanel
+            audit={auditQuery.data}
+            loading={auditQuery.isPending}
+            pending={auditMutation.isPending}
+            onAudit={() => auditMutation.mutate()}
           />
 
           <Card className="shadow-soft">
